@@ -1,0 +1,42 @@
+NODEjs->Runtime del lado del backend
+	RUNTIME->Entorno de ejecucion, donde esta lo necesario para ejecutar codigo JS
+		estuvimos usando de los navegadores
+Puede trabajar de manera independiente, con mas libertad al tener acceso a los archivos del sistema
+BFF->Backend For Frontend
+
+V8+Libuv
+Libuv->Plataforma que nos ayuda a crear asincronia I/O
+	-Arquitectura de codigo para reutilizarlo(Modulos)[COMMON JS]
+	-Poder leer y escribir archivos
+	-Leer y escribir en bases de datoas
+	-Enviar y recibir datos de internet
+	-Interpretar los formatos estandares
+	-Manejar los procesos que llevan mucho tiempo
+
+Generaremos NodeJS Binding para unificar a Chrome V8(C++) y Libuv(C), trabajando en Javascript
+Con NODEJS podremos crear API(Application Programming Interface)
+	Un medio para manipular y obtener informacion
+
+Instalacion npm init o npm init -y(No rellenar campos)
+Dentro de package.json se tendra una propiedad main donde estara el nombre del archivo del que surgira efecto
+Y para ejecutarlo se hara "node (nombre del archivo)"
+Si es index.js se hara "node index.js"
+
+MODULOS Y NPM
+Se usara COMMON JS para los modulos (requiere/export)
+Node Package Manager->Encargado de hacer la instalacion de lo que se requiera y donde se requiera
+	Al hacer npm install agarraremos la ultima version
+	Libreria npmjs.com donde hay miles de tecnologias para utilizar cosas
+		-FIJARSE NODEMON
+
+BORRAR NODE_MODULES PARA SUBIRLA AL REPO
+o en el .gitignore poner /node_modules
+
+SEMANTIC VERSIONING (el versionado)
+En las versiones que significa cada numero
+Major				Middle					Minor
+6		.		0			.		0
+Cambios que rompen		Nueva Funcionalidad		Correccion de bugs
+
+Middle y Minor son retro compatibles, que se pueden usar con otras versiones
+Pero si se llegan a cruzar 2 archivos de Major, SE ROMPE TODO
