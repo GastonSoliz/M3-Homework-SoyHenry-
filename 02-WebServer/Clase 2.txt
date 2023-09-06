@@ -1,0 +1,108 @@
+WEB SERVER ->Conexion de servidor para ser usado por el cliente
+	Un lugar(Computadora o sistema) donde nuestra aplicacion manipula la informacion dependiendo de las peticiones que se generen
+	Procesa solicitudes(requests) y devuelve una respuesta(response) a traves de un protocolo de red
+	SIEMPRE TIENE QUE DEVOLVER UNA RESPUESTA AUNQUE SEA ERROR
+
+Networks->Red de servidores disponible para entregar informacion
+	Conjunto de computadoras que comparten recursos que provienen de distintos nodos
+	Las cuales utilizan protocolos comunes de comunicaciones sobre interconexion digital para comunicarse entre si
+					(MODELO OSI)
+
+Encapsulacion->Divide los siguiente protocolos en capas
+Datos aplicacion->Capa de Aplicacion->Capa de transporte->Capa de Internet***->Capa de Link
+		(FTP,SMTP)		(TCP,UDP)	(IP,ICMP,IGMP)		(Ethernet,ARP)
+
+MODELO OSI->APP->PRESENTACION->SESION->TRANSPORTE->RED->DATA LINK->FISICO
+
+MODELO TCP/IP->APP->TRANSPORTE->RED->INTERFACE DE RED
+
+HTTP
+
+1-Usuario emite una URL desde navegador 
+
+2-Navegador envia un request
+3-Servidor mapea la URL a algun archivo
+4-Servidor retorna response
+5-Navegador procesa response y renderiza	
+
+
+CREAR UN SERVIDOR (FORMA ANTIGUA)
+1-Traer HTTP para utilizar el protocolo
+	const http=require("http") //POR DEFAULT YA EXISTE EN NODE
+Conocer la estructura solicitud HTTP(header)
+{
+"contest-length":"123",
+content-type: "text/plain",	->Tipo de informacion
+host: "Localhost",
+accept:"*"			->Que cualquier ruta puede hacer una solicitud
+}
+
+2-Crear un servidor HTTP
+http.createServer((req,res)=>{
+	res.writeHead(200,{			->200 respuesta satisfactoria
+		"content-type":"text/plain"	->tipo de header para el response BUSCAR EN GOOGLE	
+	});
+	res.end("Hola")				->response
+}).listen(3000)					->Escucha al servidor 3000
+
+3-Tener Thunder Client
+	Abrir en una New Request
+	Hacer request GET a http://localhost:3000/ y apretar send
+
+
+SI QUIERO DEVOLVER UN ARCHIVO HTML
+http.createServer((req,res)=>{
+	res.writeHead(200,{			
+		"content-type":"text/html"		
+	});
+	const html=fs.readFileSync(__dirname+ "/index.html")
+	res.end(html)				
+}).listen(3000);
+
+SI QUIERO DEVOLVER JSON
+http.createServer((req,res)=>{
+	res.writeHead(200,{			
+		"content-type":"application/json"		
+	});
+	const obj={tipo:"objeto de prueba"}
+	res.end(JSON.stringify(obj));				
+}).listen(3000);
+
+MIDDLEWARE->Un intermediario, una funcion que se invoca antes de otra cosa para validar un dato
+	Como el stringify o el validate del form
+
+dentro de createServer 
+extraer el endpoint,
+	const {url} = req;
+	if(url === "/gatito"){
+		---LO QUE QUIERO ENTREGAR---
+}else if(url === "/")
+	---OTRA RESPUESTA---
+y asi...
+PARA EL CASO ERROR
+al final de todo res.writeHead(404);
+		res.end("ERROR 404")
+
+esto se usara para distintos endpoint que tendran distintas respuestas
+	CADA RES.END SERA EL RETURN DEL IF
+
+
+CUANDO RECIBAMOS UN ERROR DE CORS POLICY
+es por no controlar el acceso
+dentro de createServer
+res.setHeader("Access-Control-Allow-Origin","*");
+"*" es para todas las direcciones pero ahi podes poner una especifica o varias
+
+RESTful API
+
+CRUD
+Create	Read	Update	Delete
+POST	GET	PUT	DELETE
+
+
+
+
+
+
+
+
