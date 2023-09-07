@@ -1,0 +1,65 @@
+PROMESAS
+
+Sincronia->Ejecutar el codigo (procesos,tareas) de manera secuencial, se hara el proceso A
+	se interrumpe hasta hacer el proceso B y despues continua
+	Proceso A -> Proceso B
+Asincronia->Ejecutar el codigo donde se hace un proceso A mientras se hace el proceso B
+
+Una promesa representa el eventual resultado de una operacion asincronica
+Sera un objeto que tendra 3 opciones gestionando el ciclo de vida de una respuesta futura
+	-Cuando todavia no resuelve->Pending
+	-Cuando se cumple ->Fullfilled->Entregara el resultado
+	-Cunado no se cumple->Rejected->Entregara la razon
+
+FULLFILLED
+Despues de la promesa generada con un fetch(por ej) se usara 
+.then((response)=>{
+	console.log(response.json());
+}) 
+para trabajar con el resultado
+
+REJECTED
+En la promesa generada despues de la respuesta fullfilled sera:
+,(error)=>{console.log("uy algo salio mal: ",error)}
+
+ira pegado al then del fullfilled y recordar que la promesa es un objeto por eso la coma entre ambos
+
+CREAMOS LAS RESPUESTAS DE LOS ESTADOS DE LA PROMESA
+const promesa = new Promise((resolve,reject)=>{
+	if(2==23){
+		resolve("BUEN RESULTADO")
+	}else{
+		reject("ERROR")
+	}
+})
+EL ERROR SALDRA COMO "Uncaught (in promise) AAAHHH"
+
+EXTRAEMOS LOS ESTADOS DE LA PROMESA CON EL THEN PARA USARLOS
+promesa.then(
+(resolve)=>{console.log(resolve)}
+(reject)=>{console.log(reject)}
+)
+
+se podran hacer los .then en la variable promesa que se necesiten
+promesa
+.then((resolve)=>(resolve=resolve+5))	si al inicio era 5 ahora sera 10
+.then((resolve)=>(resolve=resolve+5))	15
+.then((resolve)=>(resolve=resolve+5))	20
+.then()					20
+.then()					20
+.then((resolve)=>{console.log(resolve)})
+
+el parametro puede tener el nombre que sea en el .then y se tomara como el response de fullfilled
+
+PARA EL ERROR SE TENDRA
+.catch((message)=>{console.log("ALGO SALIO MAL",message)})
+y se tratara de la misma manera que .then
+
+CALLBACK HELL->Una manera de crear asincronia en JS manualmente antigua
+		Desventaja: Codigo largo, poco claro y dificil de interpretar
+
+
+
+
+
+

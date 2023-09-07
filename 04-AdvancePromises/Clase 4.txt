@@ -1,0 +1,46 @@
+.CATCH()
+Es un metodo de promesas exactamente igual a .then() con la diferencia que solo tiene un errorHandler
+Se agregaran al final de nuestras promesas concatenadas para atrapar el error
+
+FLOWCHART
+
+ESTO ES LO QUE CONTIENEN TODAS LAS PROMESAS
+
+promesa -> Instancia de promise = { status , result , metodos}
+
+status= [pending,fulfilled,rejected]
+
+result = fulfilled=> value || rejected => reason
+
+metodos = [then(value),catch(reason)]
+
+al tener una promesa fulfilled sin handler
+o una promesa rejected...
+
+promesa.then(null) ->  sera una promesa que esta en pending
+
+al tener una promesa fulfilled con handler
+
+function succesHandler(value){
+	console.log(value)
+}
+
+promesa.then((value)=>successHandler(value))
+
+En el caso de hacer un fetch
+tendremos un primer 
+function getCh(){
+	return fetch("")
+	.then(response=> return response.json())
+	.then(value => return {Name: value.namme})
+	O ACA PUEDE YA RESOLVERSE...
+}
+para agarrar su variable sera:
+const char = getChar().then(personaje=>personaje)
+
+esto es para demostrar que se puede hacer afuera tambien
+
+$Promise.prototype._internalResolve->then
+		  ._internalReject ->catch
+
+
