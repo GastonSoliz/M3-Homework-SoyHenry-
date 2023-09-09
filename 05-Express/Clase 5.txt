@@ -1,0 +1,105 @@
+Al hacer pedidos asincronicos (axios/fetch) se trabajara con promesas para obtener sus respuestas
+siendo sus metodos .then para el resultado correcto y .catch para los errores
+GENERAREMOS ESTE MISMO PROCESO PERO DE MANERA MAS FACIL CON EXPRESS Y AGREGANDO MIDDLEWARE
+
+						API REST (Trabajar con CRUD)
+EXPRESS->Framework(minimalista) enfocado a crear servidores
+	-Crear y configurar servidores
+	-Manipulacion de peticiones http
+		Mediante Routers
+	-Incorporar middlewares al server
+
+Instalacion 
+npm install express
+
+Crear servidor
+const express = require("express");
+
+const server = express()
+
+server.listen(3001);					
+
+Metodos
+(se puede usar res.writeHead... res.send... )
+server.get("/",(req,res)=>{
+	res.status(200).send(obj);
+})
+
+Al ser una url :id se extraera como
+server.get("/users/:id",(req,res)=>{
+	const {id}=req.params;
+	res.status(200).send(`Detalle del usuario ${id}`)
+})
+
+puedo usar la ruta para manejar datos y cada propiedad separa por un &
+//ruta/?name="Bartolomiau"&alias=Pompitas
+server.get("/users",(req,res)=>{
+	const {name} = req.query;
+	if(name) return res.status(200).send(`Recibi el nombre: ${name}`)
+	//SI QUERES PODES HACER ESTO CADA PROPIEDAD RECIBIDA
+})
+
+puedo usar la ruta sin lo que va a partir del "?" 
+
+QUERY "/ab?cd"
+PARAMS "/api/:id"
+----------------------------------------------------------------------
+MIDDLEWARE->Es una funcion
+
+todas las request que lleguen a mi servidor pasen de JSON a Javascript
+server.use(express.json());
+server.use(morgan("dev"))		//morgan es un middleware que nos da informacion(DEPENDENCIA A INSTALAR) 
+server.use("cors")			//MANIPULACION DE CORS(DEPENDENCIA A INSTALAR)
+PARA UTILIZARLAS ES INDISPENSABLE EL CALLBACK NEXT()??????
+----------------------------------------------------------------------
+
+server.post("/users",(req,res)=>{
+	const {email,password,username}=req.body;
+	res.status(200).send(`Usando las propiedades ${email}, ${password}y ${username}`)
+})
+
+SIEMPRE ES NECESARIO MANEJAR LOS STATUS	
+
+MODULOS
+EN OTRO INDEX.JS
+const getById = (req,res)=>{
+	const {id}=req.params;
+	res.status(200).send(`Detalle del personaje con ID : ${id}`)
+}
+TODOS LOS GETS DESCRIPTOS ARRIBAS IRIAN EXPORTADOS COMO MODULOS 
+module.exports={getById}
+EN EL PROGRAMA PRINCIPAL SE USARAN ASI:
+server.get("/users/:id",getById);
+
+RUTAS
+EN OTRO INDEX.JS
+const {Router} = require("express");
+const{metodo1,metodo2..}=require("../handlers/index")
+const mainRouter = Router();
+
+mainRouter.get("/",metodo1);
+mainRouter.post("/gatito",metodo2);
+
+module.exports= mainRouter;
+
+EN INDEX.JS QUEDARA
+const express=require("express");
+const morgan=require("morgan");
+const mainRouter = require("./routes/index);
+const server = express();
+
+server.listen(3001,()=>{
+	console.log("Servidor escuchando al puerto 3001")
+})
+
+middlewares---VAN ANTES QUE LAS RUTAS SI O SI
+server.use(express.json());
+server.use(morgan("dev"));
+server modularizado----
+server.use(mainRouter);
+
+
+
+
+
+
