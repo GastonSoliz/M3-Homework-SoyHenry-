@@ -1,0 +1,79 @@
+ASYNC/AWAIT
+
+tiene que ver el Event Loop
+
+Funcion generadora-> se declaran como function*
+functin* counter(){
+	let count=0;
+	while(true){
+		if(count>3)return count
+	}
+	yield count++;
+}
+
+yield->Expresion de retorno parcial
+	Devuelve un resultado en el momento que se genera esa funcion
+	Se va retornar en el momento que la funcion generadora se le agregue el next();
+
+Devolvera->{value,done}
+	
+RESUMEN->
+LA FUNCION VA A RETORNAR A YIELD HASTA QUE SE CUMPLA LA CONDICION PARA DAR EL RETURN
+HASTA MIENTRAS SE INVOCARA A LA FUNCION CON EL METODO .next()
+
+DONE HASTA QUE SE DE RETURN SERA FALSE
+Y CUANDO PASE A SER TRUE, EL VALUE SERA UNDEFINED
+
+U OTRA APLICACION ES:
+LA FUNCION SE EJECUTARA HASTA EL PRIMER YIELD CON LA PRIMERA INVOCACION Y ASI
+Ej:
+console.log()
+congole.log()
+yield""
+yield""
+console.log()
+
+en el primer function.next(); se ejecutara los 2 console log y el 1er yield
+en el 2do function.next() se ejecutara el otro yield
+con un 3er function.next() se ejecuta el console.log restante
+
+value sera siempre el yield y false mientras no se terminen
+en este caso el 3er next ya value sera undefined y done true
+
+obviamente si se pone un return todo lo demas no existira, es la manera de cerrar funciones generadoras
+
+Async Function->Permite codigo asincrono basado en promesas sin necesidad de encadenarlas explicitamente
+function resolveAfter2Seconds(){
+	return new Promise((promise)=>{
+		setTimeOut(()=>{
+			resolve("Exito coleguilla");
+		},3000)
+	})
+}
+
+async function asyncCall(){
+	const result = await resolveAfter2Seconds();
+}
+
+es como hacer await(URL).then(response=>response.data).then(data);
+en resulta estara lo que seria en este caso la data
+ 
+Optimizado sera un try catch
+async function requestAsync(){
+	try{
+		const {data}=await axios(URL);
+		console.log(data.name);
+	}catch(error){
+		console.log(error.message);
+	}
+
+}
+intentara hacer lo que esta dentro del try y si no sale bien, se usara el catch 
+TRY CATCH SOLO DEBE SER USADO CUANDO SE USAN PROMESAS
+
+Ventajas
+	Codigo mas prolijo y similar a codigo sincronico
+	Manejo dee errores de codigo sincronico como asincronico en un mismo lugar
+Desventajas
+	Parece sincronico pero es asincronico
+	Cuidado porque async await dificulta la eficiencia(mas en loops e iteradores)
