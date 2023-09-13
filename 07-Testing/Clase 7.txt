@@ -1,0 +1,100 @@
+TESTING - JEST
+La idea de testear una app es hacerla lo mas predecible
+
+UNIT TESTING->Evalua funciones puras(de manera individual)
+INTEGRATION TESTING->Evalua un conjunto de funciones
+	FUNCIONES MOCKS
+	FUNCIONES SPIES
+AUTOMATION TESTING(UI TESTING)->Evalua las interacciones del usuario en nuestra app
+
+Test Driven Development (TDD)
+1.Crear un test que no pasa 
+2.Resolver codigo para que pase
+3.Refactorizar
+
+Primero se crean test, despues se hace el codigo
+
+	BLACK BOX
+INPUT->	FUNCION		->OUTPUT
+	TEST
+Lo que esta dentro de la black box siempre tiene que dar lo mismo, siendo el output el correcto
+
+Se usara hasta que la app funcione correctamente y se levante el proyecto
+MODO DE USO:
+npm install --save-dev jest
+Enzyme es la libreria creada especificamente para testear a React
+en package.json->"scripts"->"test":"jest --watchAll"
+
+MATCHERS
+	Expect->devuelve "expectation" object sobre el cual se pueden invocar los matchers
+		LOS MAS USADOS=>
+		toBe->Igualdad exacta
+		toEqual->Verificacion recursiva de cada propiedad
+		toBeNull,toBeDefined,toBeUndefined
+		toBeTruthy & toBeFalsy->Buscan que el valor de veracidad sea verdadera o falsa sin necesariamente ser literalmente true o false
+		toBeGreaterThan & toBeLessThan->Que el valor sea menor o mayor que...
+		toBeCloseTo->Numero decimal sea cercano a ...
+		toContain->verifica que un arreglo contenga un elemento
+	Running options->
+		
+
+Tengo que saber exactamente el input y cual va a ser el output para crear una funcion que lo logre
+
+prueba.test.js
+describe("Tests de demo",()=>{
+	it("Suma correctamente DOS valores",()=>{
+		expect(sumar(2,4)).toBe(6)
+	})
+	it("Devuelve error si agrego negativos",()=>{
+		expect(()=> sumar(-3,5).toThrow("Solo positivos"))
+	})
+	it("Verifica array",()=>{
+		expect(esIgual().toEqual([1,2,3,4,5]))
+	})		
+})
+
+index.js
+const sumar=(a,b)=>{
+	if(a<0 || b<0) throw new Error("Solo positivos")
+	return a + b;
+}
+
+HOOKS->(()=>{})
+	beforeAll->Se ejecutara antes de que corran todos los tests
+	beforeEach->Se ejecutara antes de que corra cada uno de los tests
+	afterEach->Se ejecutara despues de que corra cada uno de los tests
+	afterAll->Se ejecutara despues de que corran todos los tests
+
+Mock Functions->Permite testear el comportamiento de una funcion que indirectamente fue ejecutada por otra
+	const mockFunction = jest.fn(person=>person.age>18);
+mock.call->array con todas las invocaciones a la funcion donde cada elemento contiene otro array con los argumentos pasados
+mock.results->
+
+SUPERTEST->Permite testear los requests a nuestro servidor de forma autocontenida sin necesidad de levanar la aplicacion
+	statusCode->Verificar si el codigo de respuesta fue el indicado
+	response-> Verifica si la respuesta 
+	Type->
+
+Si el .listen()
+
+server.test.js
+const supertest = require("supertest");
+
+const server = require("../index");
+
+const agent = supertest(server);
+
+describe("GET/harry",()=>{
+	it("Responde con un status 200", async()=>{
+		await agent.get("/harry").expect(200);
+	})
+})
+
+index.js
+const mainRouter = require("./routes/index.js")
+const express = require("express")
+const server = express();
+
+server.listen(3001,()=>{console.log("Escuchando el puerto 3001")})
+
+server.use(mainRouter);
